@@ -2,7 +2,7 @@
 import cv2
 import numpy as np
 from constant import LIGHT_BAL, VIDEO_STABLE, LIGHT_STABLE
-
+from video_stabilization import VideoStabilization
 def adjust_gamma(image, gamma=1.0):
     # build a lookup table mapping the pixel values [0, 255] to their adjusted gamma values
     invGamma = 1.0 / gamma
@@ -22,12 +22,12 @@ def balanced_frame(cap):
             if LIGHT_BAL:
                 ad_frame = adjust_gamma(frame, gamma=0.5)
             if VIDEO_STABLE:
-                pass
-                # Display the resulting frame
-                cv2.imshow('Frame', ad_frame)
-                # Press Q on keyboard to  exit
-                if cv2.waitKey(25) & 0xFF == ord('q'):
-                    break
+                ad_frame = VideoStabilization.stablize_frame()
+            # Display the resulting frame
+            cv2.imshow('Frame', ad_frame)
+            # Press Q on keyboard to  exit
+            if cv2.waitKey(25) & 0xFF == ord('q'):
+                break
         # Break the loop
         else:
             break
